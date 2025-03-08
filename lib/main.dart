@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 
-final String webhookUri = 'https://webhook.site/d1efe717-cdc1-4e9c-959a-4fe995502914';
+final String webhookUri =
+    'https://webhook.site/d1efe717-cdc1-4e9c-959a-4fe995502914';
 
 // Definicje kolorów zgodne z identyfikacją wizualną SSPW
 const Color primaryColor = Color(0xFF0073AA);
@@ -20,7 +22,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Define a custom orange color
-    const Color customOrange = Color(0xFFFFA500); // Hex code for a vibrant orange
+    const Color customOrange =
+        Color(0xFFFFA500); // Hex code for a vibrant orange
 
     return MaterialApp(
       theme: ThemeData(
@@ -37,6 +40,12 @@ class MyApp extends StatelessWidget {
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: customOrange,
+            foregroundColor:
+                Colors.white, // Ensure text is visible when disabled
+            disabledForegroundColor:
+                Colors.white.withOpacity(0.6), // Text color for disabled button
+            disabledBackgroundColor: customOrange.withOpacity(
+                0.6), // Slightly faded background for disabled button
           ),
         ),
       ),
@@ -73,13 +82,14 @@ class _GeolocationAppState extends State<GeolocationApp> {
   }
 
   void _startLocationUpdates() {
-    _timer = Timer.periodic(const Duration(minutes: 1), (Timer t) => _getCurrentLocation());
+    _timer = Timer.periodic(
+        const Duration(minutes: 1), (Timer t) => _getCurrentLocation());
   }
 
   Future<void> _getCurrentLocation() async {
     setState(() {
       _isSending = true;
-      _statusMessage = 'Pobieranie lokalizacji...';
+      _statusMessage = 'Pobieranie twojej aktualnelokalizacji...';
       _statusColor = Colors.black;
     });
 
@@ -116,8 +126,8 @@ class _GeolocationAppState extends State<GeolocationApp> {
     }
 
     try {
-        LocationSettings locationSettings = LocationSettings(
-           accuracy: LocationAccuracy.high,
+      LocationSettings locationSettings = LocationSettings(
+        accuracy: LocationAccuracy.high,
       );
 
       Position position = await Geolocator.getCurrentPosition(
@@ -157,7 +167,9 @@ class _GeolocationAppState extends State<GeolocationApp> {
         setState(() {
           _statusMessage = 'Dane zostały pomyślnie wysłane.';
           _statusColor = Colors.green;
-          _lastSentTime = DateTime.now().toLocal().toString();
+          _lastSentTime = DateFormat('yyyy-MM-dd HH:mm:ss')
+              .format(DateTime.now().toLocal())
+              .toString();
         });
       } else {
         setState(() {
@@ -208,13 +220,22 @@ class _GeolocationAppState extends State<GeolocationApp> {
             const SizedBox(height: 20),
             Text(
               'Status: $_statusMessage',
-              style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic, color: _statusColor),
+              style: TextStyle(
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic,
+                  color: _statusColor),
             ),
             if (_lastSentTime != null) ...[
               const SizedBox(height: 10),
               Text('Ostatnia wysyłka: $_lastSentTime',
-                  style: const TextStyle(fontSize: 14, fontStyle: FontStyle.italic)),
+                  style: const TextStyle(
+                      fontSize: 14, fontStyle: FontStyle.italic)),
             ],
+            const Spacer(), // Pushes everything above, making space for the logo at the bottom
+            Image.asset(
+              'assets/sspw_logo.png',
+              height: 100, // Adjust size as needed
+            ),
           ],
         ),
       ),
