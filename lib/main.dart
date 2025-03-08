@@ -181,7 +181,7 @@ class _GeolocationAppState extends State<GeolocationApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lokalizacja SSPW'),
+        title: const Text('Lokalizator EURORACE 2025'),
         centerTitle: true,
       ),
       body: Padding(

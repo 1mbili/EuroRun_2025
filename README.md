@@ -1,4 +1,4 @@
-# EuroRun 2025
+# EURORACE 2025
 
 Application to track Auto-Stop race participants organised by Samorząd Studentów Politechniki Warszawskiej.
 
